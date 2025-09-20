@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: IA e o Futuro das Profissões</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fce9e9 0%, #e0f7fa 100%);
+            color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 900px;
+            height: 80vh;
+            max-height: 600px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            padding: 3rem;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.7s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #3498db;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-content {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            max-width: 700px;
+            word-wrap: break-word;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-content h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #34495e;
+        }
+
+        .slide-content ul {
+            list-style-type: none;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 500px;
+            padding-left: 0;
+        }
+
+        .interactive-card {
+            background-color: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #bdc3c7;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: #2c3e50;
+            text-align: left;
+            position: relative;
+            z-index: 10;
+        }
+
+        .interactive-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease-in-out, padding 0.6s ease-in-out;
+            padding: 0 1rem;
+        }
+
+        .card-content.show {
+            max-height: 400px;
+            padding: 1rem;
+        }
+
+        .card-content p {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            color: #7f8c8d;
+        }
+
+        .navigation-buttons {
+            position: absolute;
+            bottom: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 20;
+        }
+
+        .nav-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+
+        .nav-button:disabled {
+            background-color: #bdc3c7;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 1.1rem;
+            color: #95a5a6;
+            z-index: 20;
+        }
+        
+        .robot-bg {
+            position: absolute;
+            bottom: -50px;
+            left: 20px;
+            width: 250px;
+            height: 250px;
+            opacity: 0.2;
+            z-index: -1;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .robot-bg:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Animação para o robô */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .robot-bg img {
+            animation: bounce 3s infinite ease-in-out;
+        }
+        
+        /* Estilos do gráfico do slide 5 */
+        .chart-container {
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            position: relative;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #34495e;
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .chart-axis-y-label {
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: rotate(-90deg) translateY(-50%);
+            font-weight: bold;
+        }
+
+        .chart-axis-x-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+        }
+
+        .chart-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, #ccc 1px, transparent 1px),
+                linear-gradient(to bottom, #ccc 1px, transparent 1px);
+            background-size: 10% 30px;
+            background-position: 0 100%;
+            z-index: 0;
+            padding-bottom: 2rem;
+        }
+        
+        .chart-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            position: relative;
+            z-index: 1;
+            padding-bottom: 30px;
+        }
+
+        .bar-wrapper {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .bar {
+            width: 50px;
+            cursor: pointer;
+            transition: height 0.5s ease-in-out;
+            pointer-events: auto;
+        }
+
+        .bar-label-x {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            font-weight: bold;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .bar-value.show {
+            opacity: 1;
+        }
+
+        /* Estilos específicos para o slide 1 */
+        #slide-1 {
+            background: linear-gradient(135deg, #e0f7fa 0%, #f3e5f5 100%);
+            position: relative;
+            overflow: hidden;
+            justify-content: center;
+            padding-top: 5rem;
+        }
+        
+        #slide-1 .slide-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            max-width: 80%;
+        }
+
+        #slide-1 .slide-content {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            max-width: 70%;
+        }
+
+        .ia-element {
+            position: absolute;
+            opacity: 0.15;
+            transition: transform 0.5s ease;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+        .ia-element:hover {
+            transform: scale(1.1);
+        }
+
+        .ia-element img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        /* Posicionamento dos ícones para o slide 1 */
+        #ia-icon-1 { top: 8%; left: 8%; }
+        #ia-icon-2 { top: 15%; right: 12%; transform: rotate(15deg); }
+        #ia-icon-3 { bottom: 20%; left: 15%; transform: rotate(-10deg); }
+        #ia-icon-4 { bottom: 8%; right: 8%; }
+        #ia-icon-5 { top: 40%; left: 5%; transform: rotate(25deg); }
+        #ia-icon-6 { bottom: 40%; right: 5%; transform: rotate(-20deg); }
+
+        @media (max-width: 768px) {
+            .presentation-container {
+                height: 90vh;
+                max-height: none;
+            }
+            .slide {
+                padding: 2rem;
+            }
+            .slide-title {
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .slide-content {
+                font-size: 1rem;
+            }
+            .slide-content h2 {
+                font-size: 1.5rem;
+            }
+            .navigation-buttons {
+                padding: 0 1rem;
+            }
+            .nav-button {
+                padding: 0.6rem 1.5rem;
+            }
+            .robot-bg {
+                width: 150px;
+                height: 150px;
+            }
+            #ia-icon-5, #ia-icon-6 { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="robot-bg">
+    <img src="https://placehold.co/250x250/3498db/ffffff?text=%F0%9F%A4%96" alt="Ícone de Robô">
+</div>
+
+<div class="presentation-container">
+    <div id="slide-1" class="slide active">
+        <div id="ia-icon-1" class="ia-element"><img src="https://placehold.co/80x80/A5C4F6/ffffff?text=%F0%9F%A7%A0" alt="Cérebro"></div>
+        <div id="ia-icon-2" class="ia-element"><img src="https://cdn.icon-icons.com/icons2/2361/PNG/512/chip_processor_icon_140049.png" alt="Chip de processador"></div>
+        <div id="ia-icon-3" class="ia-element"><img src="https://cdn.icon-icons.com/icons2/2361/PNG/512/robot_icon_140019.png" alt="Rosto de robô"></div>
+        <div id="ia-icon-4" class="ia-element"><img src="https://placehold.co/80x80/A5E6F6/ffffff?text=%F0%9F%A7%A0" alt="Cérebro com conexão"></div>
+        <div id="ia-icon-5" class="ia-element"><img src="https://cdn.icon-icons.com/icons2/2361/PNG/512/cloud_network_icon_140050.png" alt="Nuvem de rede"></div>
+        <div id="ia-icon-6" class="ia-element"><img src="https://cdn.icon-icons.com/icons2/2361/PNG/512/settings_gear_icon_140021.png" alt="Engrenagem de configurações"></div>
+
+        <h1 class="slide-title">IA e o Futuro das Profissões</h1>
+        <p class="slide-content text-xl">Uma apresentação sobre o impacto da Inteligência Artificial</p>
+        <p class="slide-content mt-4">Por: Alice, Lara e Luísa</p>
+        <p class="slide-content">Turma: 6M01</p>
+    </div>
+
+    <div id="slide-2" class="slide">
+        <h2 class="slide-title">O que é Inteligência Artificial?</h2>
+        <p class="slide-content">A IA é a capacidade de sistemas de computação de executar tarefas que, até pouco tempo atrás, exigiam inteligência humana, como aprender, raciocinar e tomar decisões.</p>
+    </div>
+
+    <div id="slide-3" class="slide">
+        <h2 class="slide-title">A IA no Nosso Dia a Dia</h2>
+        <p class="slide-content">Clique nos cartões para saber mais!</p>
+        <div class="flex flex-col mt-4 w-full max-w-xl">
+            <div class="interactive-card">
+                <h3 class="font-bold">Sistemas de Reconhecimento Facial</h3>
+                <div class="card-content">
+                    <p>Usados em smartphones e aeroportos para identificar indivíduos. A IA analisa milhares de pontos de dados no seu rosto para criar um "mapa" único, garantindo segurança e conveniência.</p>
+                </div>
+            </div>
+            <div class="interactive-card">
+                <h3 class="font-bold">Diagnóstico Médico por Imagem</h3>
+                <div class="card-content">
+                    <p>Algoritmos de IA analisam radiografias e ressonâncias magnéticas em segundos, identificando padrões que podem indicar doenças como câncer com precisão surpreendente, ajudando médicos no diagnóstico precoce.</p>
+                </div>
+            </div>
+            <div class="interactive-card">
+                <h3 class="font-bold">Assistentes de Redação</h3>
+                <div class="card-content">
+                    <p>Ferramentas como o Grammarly usam IA para corrigir erros de gramática, sugerir melhorias de estilo e até mesmo gerar textos criativos, agilizando o trabalho de escritores e estudantes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="slide-4" class="slide">
+        <h2 class="slide-title">Curiosidades Surpreendentes sobre a IA</h2>
+        <p class="slide-content">Fatos que você provavelmente não sabia. Clique e veja!</p>
+        <div class="flex flex-col mt-4 w-full max-w-xl">
+            <div class="interactive-card">
+                <h3 class="font-bold">A IA que Venceu o Campeão de Xadrez</h3>
+                <div class="card-content">
+                    <p>Em 1997, o computador Deep Blue da IBM se tornou a primeira IA a vencer o campeão mundial de xadrez, Garry Kasparov, mostrando o poder da computação e do aprendizado de máquina.</p>
+                </div>
+            </div>
+            <div class="interactive-card">
+                <h3 class="font-bold">IA e a Descoberta de Novos Remédios</h3>
+                <div class="card-content">
+                    <p>A IA é capaz de analisar rapidamente milhões de combinações moleculares para descobrir novos medicamentos, acelerando a pesquisa e o desenvolvimento na indústria farmacêutica.</p>
+                </div>
+            </div>
+            <div class="interactive-card">
+                <h3 class="font-bold">A Criação de Obras de Arte</h3>
+                <div class="card-content">
+                    <p>Existem IAs que são verdadeiros artistas, criando pinturas, esculturas e até mesmo músicas originais. Uma pintura criada por uma IA já foi vendida por quase meio milhão de dólares.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="slide-5" class="slide">
+        <div class="chart-container">
+            <div class="chart-title">Total de crianças que usam aplicativos</div>
+            <div class="chart-axis-y-label">Quantidade de crianças</div>
+            <div class="chart-axis-x-label">Aplicativos</div>
+            <div class="chart-grid"></div>
+            <div class="chart-content">
+                <div class="bar-wrapper" data-value="81">
+                    <div class="bar" style="background-color: #e74c3c;"></div>
+                    <span class="bar-label-x">Roblox</span>
+                </div>
+                <div class="bar-wrapper" data-value="73">
+                    <div class="bar" style="background-color: #3498db;"></div>
+                    <span class="bar-label-x">ChatGPT</span>
+                </div>
+                <div class="bar-wrapper" data-value="82">
+                    <div class="bar" style="background-color: #2ecc71;"></div>
+                    <span class="bar-label-x">YouTube</span>
+                </div>
+                <div class="bar-wrapper" data-value="89">
+                    <div class="bar" style="background-color: #9b59b6;"></div>
+                    <span class="bar-label-x">WhatsApp</span>
+                </div>
+                <div class="bar-wrapper" data-value="58">
+                    <div class="bar" style="background-color: #f1c40f;"></div>
+                    <span class="bar-label-x">Canva</span>
+                </div>
+                <div class="bar-wrapper" data-value="41">
+                    <div class="bar" style="background-color: #1abc9c;"></div>
+                    <span class="bar-label-x">Instagram</span>
+                </div>
+                <div class="bar-wrapper" data-value="42">
+                    <div class="bar" style="background-color: #e67e22;"></div>
+                    <span class="bar-label-x">CapCut</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="slide-6" class="slide">
+        <h2 class="slide-title">Habilidades Essenciais para o Futuro</h2>
+        <p class="slide-content">As habilidades que nos diferenciam da IA serão as mais valorizadas:</p>
+        <ul class="slide-content mt-4">
+            <li><b>Pensamento Crítico:</b> Capacidade de analisar informações e tomar decisões lógicas.</li>
+            <li><b>Criatividade:</b> Habilidade de gerar ideias novas e originais.</li>
+            <li><b>Resolução de Problemas Complexos:</b> Encontrar soluções para desafios que a IA não consegue resolver sozinha.</li>
+        </ul>
+    </div>
+
+    <div id="slide-7" class="slide">
+        <h2 class="slide-title">IA e a Criatividade</h2>
+        <p class="slide-content">A IA não é uma ameaça à criatividade, mas sim um parceiro. Ela pode auxiliar designers a criar protótipos, músicos a compor novas melodias e escritores a superar bloqueios criativos.</p>
+    </div>
+
+    <div id="slide-8" class="slide">
+        <h2 class="slide-title">A Colaboração entre Humanos e Máquinas</h2>
+        <p class="slide-content">O futuro do trabalho será cada vez mais híbrido. As máquinas farão o trabalho repetitivo, liberando os humanos para se concentrarem em tarefas que exigem empatia, criatividade e pensamento estratégico.</p>
+    </div>
+
+    <div id="slide-9" class="slide">
+        <h2 class="slide-title">A Importância da Educação Contínua</h2>
+        <p class="slide-content">Aprender a trabalhar com a IA é crucial. A educação e a requalificação profissional serão contínuas, garantindo que as pessoas possam se adaptar às mudanças do mercado de trabalho.</p>
+    </div>
+
+    <div id="slide-10" class="slide">
+        <h2 class="slide-title">Desafios e Considerações Éticas</h2>
+        <p class="slide-content">Com o avanço da IA, surgem novos desafios. É fundamental discutir questões como o viés em algoritmos, a privacidade dos dados, a segurança e o impacto social do desemprego tecnológico.</p>
+    </div>
+
+    <div id="slide-11" class="slide">
+        <h2 class="slide-title">Conclusão: Um Futuro Promissor</h2>
+        <p class="slide-content">A inteligência artificial é uma ferramenta poderosa que, quando utilizada com responsabilidade, pode gerar um futuro com mais oportunidades e inovações. Prepare-se para um mundo de colaboração e transformação!</p>
+    </div>
+    
+    <div class="navigation-buttons">
+        <button id="prev-button" class="nav-button" disabled>Anterior</button>
+        <button id="next-button" class="nav-button">Próximo</button>
+    </div>
+    
+    <div id="slide-number" class="slide-number"></div>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    const slideNumberDiv = document.getElementById('slide-number');
+
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide) => {
+            slide.classList.remove('active');
+        });
+        slides[index].classList.add('active');
+        updateButtons();
+        updateSlideNumber();
+        if (index === 4) {
+            renderChart();
+        }
+    }
+
+    function updateButtons() {
+        prevButton.disabled = currentSlide === 0;
+        nextButton.disabled = currentSlide === slides.length - 1;
+    }
+
+    function updateSlideNumber() {
+        slideNumberDiv.textContent = `${currentSlide + 1} / ${slides.length}`;
+    }
+
+    prevButton.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+    });
+
+    function toggleCard(card) {
+        const content = card.querySelector('.card-content');
+        content.classList.toggle('show');
+    }
+    
+    // Adiciona event listeners para os cartões interativos
+    document.addEventListener('DOMContentLoaded', () => {
+        const interactiveCards = document.querySelectorAll('.interactive-card');
+        interactiveCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleCard(this);
+            });
+        });
+
+        const bars = document.querySelectorAll('.bar-wrapper');
+        bars.forEach(barWrapper => {
+            // Cria e adiciona o elemento de valor
+            const barValue = document.createElement('span');
+            barValue.classList.add('bar-value');
+            barValue.textContent = barWrapper.dataset.value;
+            barWrapper.appendChild(barValue);
+
+            // Adiciona event listener
+            barWrapper.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const valueSpan = this.querySelector('.bar-value');
+                valueSpan.classList.toggle('show');
+            });
+        });
+    });
+
+    function renderChart() {
+        const bars = document.querySelectorAll('.bar-wrapper');
+        let max_value = 0;
+        bars.forEach(bar => {
+            const value = parseInt(bar.dataset.value, 10);
+            if (value > max_value) {
+                max_value = value;
+            }
+        });
+
+        const chartContainerHeight = 250;
+        
+        bars.forEach(bar => {
+            const value = parseInt(bar.dataset.value, 10);
+            const new_height = (value / max_value) * chartContainerHeight;
+            const barElement = bar.querySelector('.bar');
+            barElement.style.height = `${new_height}px`;
+        });
+    }
+
+    window.onload = () => {
+        showSlide(currentSlide);
+    };
+
+    // Navegação por teclado
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' && currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+        if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+        if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+    });
+
+    // Suporte para gestos em dispositivos móveis
+    let startX = 0;
+    let endX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+        startX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].screenX;
+        handleGesture();
+    });
+
+    function handleGesture() {
+        if (endX < startX - 50 && currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+        if (endX > startX + 50 && currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+    }
+</script>
+
+</body>
+</html>
